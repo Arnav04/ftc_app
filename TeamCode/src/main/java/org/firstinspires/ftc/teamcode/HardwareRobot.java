@@ -70,16 +70,20 @@ public class HardwareRobot {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap) throws InterruptedException {
         // save reference to HW Map
         hwMap = ahwMap;
         // Define and Initialize Motors
-        leftDrive = hwMap.get(DcMotor.class, "left_drive");
-        rightDrive = hwMap.get(DcMotor.class, "right_drive");
+        leftDrive = hwMap.get(DcMotor.class, "motorLeft");
+        rightDrive = hwMap.get(DcMotor.class, "motorRight");
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         // Set all motors to zero power
+        leftDrive.setPower(1);
+        rightDrive.setPower(1);
+        Thread.sleep(5000);
+
         leftDrive.setPower(0);
-        rightDrive.setPower(0);
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

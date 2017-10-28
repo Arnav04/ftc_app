@@ -71,10 +71,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 //Disabled
 public class ConceptVuMarkIdentification extends LinearOpMode {
 
+    HardwareRobot robot = new HardwareRobot();
+
     public static final String TAG = "Vuforia VuMark Sample";
 
-    DcMotor motorLeft = hardwareMap.get(DcMotor.class, "motorLeft");
-    DcMotor motorRight = hardwareMap.get(DcMotor.class, "motorRight");
+    //DcMotor motorLeft = hardwareMap.get(DcMotor.class, "motorLeft");
+    //DcMotor motorRight = hardwareMap.get(DcMotor.class, "motorRight");
 
     OpenGLMatrix lastLocation = null;
 
@@ -149,10 +151,11 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                  * loop until this condition occurs, then move on to act accordingly depending
                  * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
+                Hardware
 
                 if (vuMark.equals("LEFT"))
                 {
-                    motorLeft.setPower(1);
+                    leftDrive.setPower(1);
                 }
 
                 if (vuMark.equals("RIGHT"))
