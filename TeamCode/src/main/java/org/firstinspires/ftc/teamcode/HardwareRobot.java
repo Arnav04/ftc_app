@@ -27,32 +27,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 /**
  * This is NOT an opmode.
- *
+ * <p>
  * This class can be used to define all the specific hardware for a single robot.
  * In this case that robot is a K9 robot.
- *
+ * <p>
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
- *
+ * <p>
  * Motor channel:  Left  drive motor:        "left_drive"
  * Motor channel:  Right drive motor:        "right_drive"
  * Servo channel:  Servo to raise/lower arm: "arm"
  * Servo channel:  Servo to open/close claw: "claw"
- *
+ * <p>
  * Note: the configuration of the servos is such that:
- *   As the arm servo approaches 0, the arm position moves up (away from the floor).
- *   As the claw servo approaches 0, the claw opens up (drops the game element).
+ * As the arm servo approaches 0, the arm position moves up (away from the floor).
+ * As the claw servo approaches 0, the claw opens up (drops the game element).
  */
 public class HardwareRobot {
     /* Public OpMode members. */
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
+    public DcMotor leftDriveFront = null;
+    public DcMotor rightDriveFront = null;
+    public DcMotor leftDriveBack = null;
+    public DcMotor rightDriveBack = null;
     //public Servo    arm         = null;
     //public Servo    claw        = null;
     //public final static double ARM_HOME = 0.2;
@@ -79,18 +83,22 @@ public class HardwareRobot {
         // save reference to HW Map
         hwMap = ahwMap;
         // Define and Initialize Motors
-        leftDrive = hwMap.get(DcMotor.class, "leftMotor");
-        rightDrive = hwMap.get(DcMotor.class, "rightMotor");
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveFront = hwMap.get(DcMotor.class, "leftMotorFront");
+        rightDriveFront = hwMap.get(DcMotor.class, "rightMotorFront");
+        leftDriveBack = hwMap.get(DcMotor.class, "leftMotorBack");
+        rightDriveBack = hwMap.get(DcMotor.class, "rightMotorBack");
+        leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
         // Set all motors to zero power
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
+        leftDriveFront.setPower(0);
+        rightDriveFront.setPower(0);
+
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // Define and initialize ALL installed servos.
         //arm  = hwMap.get(Servo.class, "arm");
         //claw = hwMap.get(Servo.class, "claw");
@@ -98,10 +106,23 @@ public class HardwareRobot {
         //claw.setPosition(CLAW_HOME);
     }
 
-    public void change() {
+    public void encoderSwitch() {
 
-        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (leftDriveFront.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
+
+            leftDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        } else {
+
+            leftDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        }
 
     }
 }

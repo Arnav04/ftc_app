@@ -29,14 +29,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -96,7 +92,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        int counter = 0;
 
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -155,44 +150,30 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                  * loop until this condition occurs, then move on to act accordingly depending
                  * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
-                int x = vuMark.hashCode();
 
-                //telemetry.addData("number", x);
-                while (x==2332680)
+                if (vuMark.toString().equals("LEFT"))
                 {
-//                    motorLeft.setPower(1);
-                    if (counter == 0) {
-                        robot.leftDrive.setPower(1);
-                        counter++;
-                    }
+                    robot.leftDriveFront.setPower(1);
+                } else {
+                    robot.leftDriveFront.setPower(0);
+                }
 
-                }
-                //counter = 0;
-                //robot.leftDrive.setPower(0);
-                while (x==77974015)
+                if (vuMark.toString().equals("RIGHT"))
                 {
-//                    motorRight.setPower(1);
-                    if (counter == 0) {
-                        robot.rightDrive.setPower(1);
-                        counter++;
-                    }
+                    robot.rightDriveFront.setPower(1);
+                } else {
+                    robot.rightDriveFront.setPower(0);
                 }
-                //counter = 0;
-                //robot.rightDrive.setPower(0);
-                while (x==1984282711)
-                {
-//                    motorLeft.setPower(1);
-//                    motorRight.setPower(1);
-                    if (counter == 0) {
 
-                        robot.leftDrive.setPower(1);
-                        robot.rightDrive.setPower(1);
-                        counter++;
-                    }
+                if (vuMark.toString().equals("CENTER"))
+                {
+                    robot.leftDriveFront.setPower(1);
+                    robot.rightDriveFront.setPower(1);
+                } else {
+                    robot.leftDriveFront.setPower(0);
+                    robot.rightDriveFront.setPower(0);
                 }
-                counter = 0;
-                robot.leftDrive.setPower(0);
-                robot.rightDrive.setPower(0);
+
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
