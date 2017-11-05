@@ -71,10 +71,8 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
-//    DcMotor motorLeft = hardwareMap.get(DcMotor.class, "motorLeft");
-//    DcMotor motorRight = hardwareMap.get(DcMotor.class, "motorRight");
     HardwareRobot robot = new HardwareRobot();
-    //HardwareMap map = null;
+//    HardwareMap map = null;
 
     OpenGLMatrix lastLocation = null;
 
@@ -151,27 +149,21 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                  * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
 
-                if (vuMark.toString().equals("LEFT"))
-                {
+                if (vuMark.equals(RelicRecoveryVuMark.LEFT)) {
+
                     robot.leftDriveFront.setPower(1);
-                } else {
-                    robot.leftDriveFront.setPower(0);
-                }
 
-                if (vuMark.toString().equals("RIGHT"))
-                {
+                }
+                else if (vuMark.equals(RelicRecoveryVuMark.RIGHT)) {
+
                     robot.rightDriveFront.setPower(1);
-                } else {
-                    robot.rightDriveFront.setPower(0);
-                }
 
-                if (vuMark.toString().equals("CENTER"))
-                {
+                }
+                else if (vuMark.equals(RelicRecoveryVuMark.CENTER)) {
+
                     robot.leftDriveFront.setPower(1);
                     robot.rightDriveFront.setPower(1);
-                } else {
-                    robot.leftDriveFront.setPower(0);
-                    robot.rightDriveFront.setPower(0);
+
                 }
 
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
@@ -198,7 +190,11 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                 }
             }
             else {
+
                 telemetry.addData("VuMark", "not visible");
+                robot.leftDriveFront.setPower(0);
+                robot.rightDriveFront.setPower(0);
+
             }
 
             telemetry.update();
@@ -207,5 +203,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
 
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+
     }
 }

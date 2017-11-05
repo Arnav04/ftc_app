@@ -51,25 +51,29 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * As the arm servo approaches 0, the arm position moves up (away from the floor).
  * As the claw servo approaches 0, the claw opens up (drops the game element).
  */
+
 public class HardwareRobot {
+
     /* Public OpMode members. */
     public DcMotor leftDriveFront = null;
-    public DcMotor rightDriveFront = null;
     public DcMotor leftDriveBack = null;
+    public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
-    //public Servo    arm         = null;
-    //public Servo    claw        = null;
-    //public final static double ARM_HOME = 0.2;
-    //public final static double CLAW_HOME = 0.2;
-    //public final static double ARM_MIN_RANGE  = 0.20;
-    //public final static double ARM_MAX_RANGE  = 0.90;
-    //public final static double CLAW_MIN_RANGE  = 0.20;
-    //public final static double CLAW_MAX_RANGE  = 0.7;
+
     final static double COUNTS_PER_MOTOR_REV = 1440;
     final static double DRIVE_GEAR_REDUCTION = 2.91;
     final static double WHEEL_DIAMETER_INCHES = 4.0;
     public final static double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+//    public Servo    arm         = null;
+//    public Servo    claw        = null;
+//    public final static double ARM_HOME = 0.2;
+//    public final static double CLAW_HOME = 0.2;
+//    public final static double ARM_MIN_RANGE  = 0.20;
+//    public final static double ARM_MAX_RANGE  = 0.90;
+//    public final static double CLAW_MIN_RANGE  = 0.20;
+//    public final static double CLAW_MAX_RANGE  = 0.7;
+
     /* Local OpMode members. */
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
@@ -80,18 +84,21 @@ public class HardwareRobot {
 
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
+
         // save reference to HW Map
         hwMap = ahwMap;
+
         // Define and Initialize Motors
         leftDriveFront = hwMap.get(DcMotor.class, "leftMotorFront");
-        rightDriveFront = hwMap.get(DcMotor.class, "rightMotorFront");
         leftDriveBack = hwMap.get(DcMotor.class, "leftMotorBack");
+        rightDriveFront = hwMap.get(DcMotor.class, "rightMotorFront");
         rightDriveBack = hwMap.get(DcMotor.class, "rightMotorBack");
         leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
         leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+
         // Set all motors to zero power
-        leftDriveFront.setPower(0);
-        rightDriveFront.setPower(0);
+        setAllLeftDrivePower(0);
+        setAllRightDrivePower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -99,11 +106,13 @@ public class HardwareRobot {
         rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         // Define and initialize ALL installed servos.
         //arm  = hwMap.get(Servo.class, "arm");
         //claw = hwMap.get(Servo.class, "claw");
         //arm.setPosition(ARM_HOME);
         //claw.setPosition(CLAW_HOME);
+
     }
 
     public void encoderSwitch() {
@@ -123,6 +132,20 @@ public class HardwareRobot {
             rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         }
+    }
+
+
+    public void setAllLeftDrivePower(double power) {
+
+        leftDriveFront.setPower(power);
+        leftDriveBack.setPower(power);
+
+    }
+
+    public void setAllRightDrivePower(double power) {
+
+        rightDriveFront.setPower(power);
+        rightDriveBack.setPower(power);
 
     }
 }

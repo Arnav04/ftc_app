@@ -55,20 +55,16 @@ import com.qualcomm.robotcore.util.Range;
 @Autonomous(name = "Tutorial OpMode")
 public class TutorialAutonomous extends LinearOpMode {
 
-
-    DcMotor motorRight = null;
-    DcMotor motorLeft = null;
-    //hello!
+    HardwareRobot robot = new HardwareRobot();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        motorLeft = hardwareMap.get(DcMotor.class, "motorLeft");
         waitForStart();
 
-        motorLeft.setPower(1);
+        robot.leftDriveFront.setPower(1);
         Thread.sleep(5000);
+        robot.leftDriveFront.setPower(0);
 
     }
-
 }

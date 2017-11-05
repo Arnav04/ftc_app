@@ -32,10 +32,8 @@ public class TeleOp extends LinearOpMode {
                     leftPower -=  0.1;
                     rightPower -= 0.1;
 
-                    robot.leftDriveFront.setPower(leftPower);
-                    robot.leftDriveBack.setPower(leftPower);
-                    robot.rightDriveFront.setPower(rightPower);
-                    robot.rightDriveBack.setPower(rightPower);
+                    robot.setAllLeftDrivePower(leftPower);
+                    robot.setAllRightDrivePower(rightPower);
 
                 }
 
@@ -44,14 +42,9 @@ public class TeleOp extends LinearOpMode {
 
             }
 
-            robot.leftDriveFront.setPower(leftPower);
-            robot.leftDriveBack.setPower(leftPower);
-            robot.rightDriveFront.setPower(rightPower);
-            robot.rightDriveBack.setPower(rightPower);
+            robot.setAllLeftDrivePower(leftPower);
+            robot.setAllRightDrivePower(rightPower);
 
         }
-
     }
-
-
 }
