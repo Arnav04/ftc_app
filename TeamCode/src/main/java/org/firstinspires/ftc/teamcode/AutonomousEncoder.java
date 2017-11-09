@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+@Disabled
 public class AutonomousEncoder extends LinearOpMode {
 
     HardwareRobot robot = new HardwareRobot();
@@ -13,6 +15,7 @@ public class AutonomousEncoder extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         robot.init(hwMap);
+
 
     }
 

@@ -60,9 +60,9 @@ public class HardwareRobot {
     public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
 
-    final static double COUNTS_PER_MOTOR_REV = 1440;
-    final static double DRIVE_GEAR_REDUCTION = 2.91;
-    final static double WHEEL_DIAMETER_INCHES = 4.0;
+    final static double COUNTS_PER_MOTOR_REV = 1;
+    final static double DRIVE_GEAR_REDUCTION = 1;
+    final static double WHEEL_DIAMETER_INCHES = 1;
     public final static double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 //    public Servo    arm         = null;
@@ -89,10 +89,10 @@ public class HardwareRobot {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftDriveFront = hwMap.get(DcMotor.class, "leftMotorFront");
-        leftDriveBack = hwMap.get(DcMotor.class, "leftMotorBack");
-        rightDriveFront = hwMap.get(DcMotor.class, "rightMotorFront");
-        rightDriveBack = hwMap.get(DcMotor.class, "rightMotorBack");
+        leftDriveFront = hwMap.get(DcMotor.class, "leftMotor");
+        leftDriveBack = hwMap.get(DcMotor.class, "leftMotor");
+        rightDriveFront = hwMap.get(DcMotor.class, "rightMotor");
+        rightDriveBack = hwMap.get(DcMotor.class, "rightMotor");
         leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
         leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
 
@@ -131,7 +131,7 @@ public class HardwareRobot {
             leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        }
+       }
     }
 
 

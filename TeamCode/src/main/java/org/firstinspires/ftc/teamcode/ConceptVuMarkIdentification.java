@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -133,7 +134,11 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
         relicTrackables.activate();
         robot.init(hardwareMap);
 
+        int counter = 0;
+
         while (opModeIsActive()) {
+
+
 
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
@@ -149,20 +154,37 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                  * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
 
-                if (vuMark.equals(RelicRecoveryVuMark.LEFT)) {
+                if (vuMark == RelicRecoveryVuMark.LEFT && counter == 0) {
 
-                    robot.leftDriveFront.setPower(1);
-
-                }
-                else if (vuMark.equals(RelicRecoveryVuMark.RIGHT)) {
-
-                    robot.rightDriveFront.setPower(1);
+                    robot.leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    robot.leftDriveFront.setTargetPosition((int) (robot.COUNTS_PER_INCH) * 1);
+                    counter++;
 
                 }
-                else if (vuMark.equals(RelicRecoveryVuMark.CENTER)) {
+                else if (vuMark == RelicRecoveryVuMark.RIGHT && counter == 0) {
 
+                    robot.rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    robot.rightDriveFront.setTargetPosition((int) (robot.COUNTS_PER_INCH) * 1);
+                    counter++;
+
+                }
+                else if (vuMark == RelicRecoveryVuMark.CENTER && counter == 0) {
+
+
+
+                    robot.leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    robot.leftDriveFront.setTargetPosition(robot.leftDriveFront.getCurrentPosition() + 200);
+                    robot.rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    robot.rightDriveFront.setTargetPosition(robot.rightDriveFront.getCurrentPosition() + 200);
+                    robot.leftDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.rightDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.leftDriveFront.setPower(1);
                     robot.rightDriveFront.setPower(1);
+                    counter++;
+
+
+
+
 
                 }
 
@@ -192,8 +214,8 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
             else {
 
                 telemetry.addData("VuMark", "not visible");
-                robot.leftDriveFront.setPower(0);
-                robot.rightDriveFront.setPower(0);
+                //robot.leftDriveFront.setPower(0);
+                //robot.rightDriveFront.setPower(0);
 
             }
 
