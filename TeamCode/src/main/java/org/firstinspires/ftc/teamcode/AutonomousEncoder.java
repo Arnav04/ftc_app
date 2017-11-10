@@ -16,7 +16,6 @@ public class AutonomousEncoder extends LinearOpMode {
 
         robot.init(hwMap);
 
-
     }
 
     public void drive(int leftPower, int rightPower, int inches) throws InterruptedException {

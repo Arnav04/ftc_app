@@ -138,8 +138,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-
-
             /**
              * See if any of the instances of {@link relicTemplate} are currently visible.
              * {@link RelicRecoveryVuMark} is an enum which can have the following values:
@@ -161,6 +159,7 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                     counter++;
 
                 }
+
                 else if (vuMark == RelicRecoveryVuMark.RIGHT && counter == 0) {
 
                     robot.rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -168,9 +167,8 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                     counter++;
 
                 }
+
                 else if (vuMark == RelicRecoveryVuMark.CENTER && counter == 0) {
-
-
 
                     robot.leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                     robot.leftDriveFront.setTargetPosition(robot.leftDriveFront.getCurrentPosition() + 200);
@@ -181,10 +179,6 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
                     robot.leftDriveFront.setPower(1);
                     robot.rightDriveFront.setPower(1);
                     counter++;
-
-
-
-
 
                 }
 
