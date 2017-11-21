@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.zip.DeflaterInputStream;
+
 /**
  * This is NOT an opmode.
  * <p>
@@ -115,27 +117,6 @@ public class HardwareRobot {
 
     }
 
-    public void encoderSwitch() {
-
-        if (leftDriveFront.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
-
-            leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        }
-        else
-            {
-
-            leftDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        }
-    }
-
     public void setAllLeftDrivePower(double power) {
 
         leftDriveFront.setPower(power);
@@ -150,46 +131,22 @@ public class HardwareRobot {
 
     }
 
-    public void driveWithEncoder(DcMotor motor, double target, double power) {
+    public void driveWithEncoder(double distance, double leftPower, double rightPower) {
 
-        int currentPos = motor.getCurrentPosition();
-        int targetPos = currentPos + (int)(COUNTS_PER_INCH * target);
+        leftDriveFront.setTargetPosition(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        leftDriveBack.setTargetPosition(leftDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        rightDriveFront.setTargetPosition(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        rightDriveBack.setTargetPosition(rightDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
 
-        motor.setTargetPosition(targetPos);
+        setAllLeftDrivePower(leftPower);
+        setAllRightDrivePower(rightPower);
 
-        motor.setPower(power);
-
-        while (Math.abs(motor.getCurrentPosition() - targetPos) > 1) {
-
-        }
-
-        motor.setPower(0);
-    }
-
-    public void driveMotorsWithEncoder(DcMotor[] motor, double target, double power) {
-
-        int currentPos;
-        int targetPos;
-
-        for (int i = 0; i < motor.length; i += 1) {
-
-            currentPos = motor[i].getCurrentPosition();
-            targetPos = currentPos + (int)(COUNTS_PER_INCH * target);
-
-            motor[i].setTargetPosition(targetPos);
-
-            motor[i].setPower(power);
-
-        }
-        
-        while (motor[0].getCurrentPosition() > 1) {
+        while (Math.abs(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1 &&
+                Math.abs(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1) {
 
         }
 
-        for (int i = 0; i < motor.length; i += 1) {
-
-            motor[i].setPower(0);
-
-        }
+        setAllLeftDrivePower(0);
+        setAllRightDrivePower(0);
     }
 }
