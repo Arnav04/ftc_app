@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.zip.DeflaterInputStream;
+
 /**
  * This is NOT an opmode.
  * <p>
@@ -60,9 +62,9 @@ public class HardwareRobot {
     public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
 
-    final static double COUNTS_PER_MOTOR_REV = 1;
-    final static double DRIVE_GEAR_REDUCTION = 1;
-    final static double WHEEL_DIAMETER_INCHES = 1;
+    final static double COUNTS_PER_MOTOR_REV = 1760;
+    final static double DRIVE_GEAR_REDUCTION = 2;
+    final static double WHEEL_DIAMETER_INCHES = 4;
     public final static double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 //    public Servo    arm         = null;
@@ -102,10 +104,10 @@ public class HardwareRobot {
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Define and initialize ALL installed servos.
         //arm  = hwMap.get(Servo.class, "arm");
@@ -113,25 +115,6 @@ public class HardwareRobot {
         //arm.setPosition(ARM_HOME);
         //claw.setPosition(CLAW_HOME);
 
-    }
-
-    public void encoderSwitch() {
-
-        if (leftDriveFront.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
-
-            leftDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        } else {
-
-            leftDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-       }
     }
 
     public void setAllLeftDrivePower(double power) {
@@ -146,5 +129,24 @@ public class HardwareRobot {
         rightDriveFront.setPower(power);
         rightDriveBack.setPower(power);
 
+    }
+
+    public void driveWithEncoder(double distance, double leftPower, double rightPower) {
+
+        leftDriveFront.setTargetPosition(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        leftDriveBack.setTargetPosition(leftDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        rightDriveFront.setTargetPosition(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        rightDriveBack.setTargetPosition(rightDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+
+        setAllLeftDrivePower(leftPower);
+        setAllRightDrivePower(rightPower);
+
+        while (Math.abs(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1 &&
+                Math.abs(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1) {
+
+        }
+
+        setAllLeftDrivePower(0);
+        setAllRightDrivePower(0);
     }
 }
