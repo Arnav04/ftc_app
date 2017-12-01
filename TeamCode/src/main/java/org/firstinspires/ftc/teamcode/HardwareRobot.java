@@ -33,8 +33,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.util.zip.DeflaterInputStream;
-
 /**
  * This is NOT an opmode.
  * <p>
@@ -62,12 +60,12 @@ public class HardwareRobot {
     public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
 
-    final static double COUNTS_PER_MOTOR_REV = 1760;
-    final static double DRIVE_GEAR_REDUCTION = 2;
+    final static double COUNTS_PER_MOTOR_REV = 1750;
+    final static double DRIVE_GEAR_REDUCTION = 0.5;
     final static double WHEEL_DIAMETER_INCHES = 4;
     public final static double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-//    public Servo    arm         = null;
+
 //    public Servo    claw        = null;
 //    public final static double ARM_HOME = 0.2;
 //    public final static double CLAW_HOME = 0.2;
@@ -91,12 +89,12 @@ public class HardwareRobot {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftDriveFront = hwMap.get(DcMotor.class, "leftMotorFront");
-        rightDriveFront = hwMap.get(DcMotor.class, "rightMotorFront");
-        leftDriveBack = hwMap.get(DcMotor.class, "leftMotorBack");
-        rightDriveBack = hwMap.get(DcMotor.class, "rightMotorBack");
-        leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
-        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveFront = hwMap.get(DcMotor.class, "m1");
+        rightDriveFront = hwMap.get(DcMotor.class, "m2");
+        leftDriveBack = hwMap.get(DcMotor.class, "m3");
+        rightDriveBack = hwMap.get(DcMotor.class, "m4");
+        rightDriveFront.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         setAllLeftDrivePower(0);
@@ -117,6 +115,67 @@ public class HardwareRobot {
 
     }
 
+    public void encoderSwitch() {
+
+        if (leftDriveFront.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
+
+            leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+        else
+            {
+
+            leftDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightDriveFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightDriveBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        }
+    }
+
+    public void runDistance (int distance, int left_power, int right_power) {
+        int current = rightDriveFront.getCurrentPosition();
+        int target = current + (int)(COUNTS_PER_INCH * distance);
+
+
+        rightDriveFront.setTargetPosition(target);
+        rightDriveBack.setTargetPosition(target);
+        leftDriveFront.setTargetPosition(target);
+        leftDriveBack.setTargetPosition(target);
+
+        setAllLeftDrivePower(left_power);
+        setAllRightDrivePower(right_power);
+        while( Math.abs(target - leftDriveFront.getCurrentPosition()) > 100 && Math.abs(target - rightDriveFront.getCurrentPosition()) > 100 && Math.abs(target - leftDriveBack.getCurrentPosition()) > 100 && Math.abs(target - rightDriveBack.getCurrentPosition()) > 100)
+        {
+
+        }
+        //robot.rightDriveFront.
+        //robot.rightDriveFront.setPower(0);
+        setAllLeftDrivePower(left_power/2);
+        setAllRightDrivePower(right_power/2);
+
+        while( Math.abs(target - leftDriveFront.getCurrentPosition()) > 50 && Math.abs(target - rightDriveFront.getCurrentPosition()) > 50 && Math.abs(target - leftDriveBack.getCurrentPosition()) > 50 && Math.abs(target - rightDriveBack.getCurrentPosition()) > 50)
+        {
+
+        }
+        //robot.rightDriveFront.
+        //robot.rightDriveFront.setPower(0);
+        setAllLeftDrivePower(left_power/4);
+        setAllRightDrivePower(right_power/4);
+
+        while( Math.abs(target - leftDriveFront.getCurrentPosition()) > 1 && Math.abs(target - rightDriveFront.getCurrentPosition()) > 1 && Math.abs(target - leftDriveBack.getCurrentPosition()) > 1 && Math.abs(target - rightDriveBack.getCurrentPosition()) > 1)
+        {
+
+        }
+        //robot.rightDriveFront.
+        //robot.rightDriveFront.setPower(0);
+        setAllLeftDrivePower(0);
+        setAllRightDrivePower(0);
+
+    }
     public void setAllLeftDrivePower(double power) {
 
         leftDriveFront.setPower(power);
@@ -131,22 +190,7 @@ public class HardwareRobot {
 
     }
 
-    public void driveWithEncoder(double distance, double leftPower, double rightPower) {
 
-        leftDriveFront.setTargetPosition(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
-        leftDriveBack.setTargetPosition(leftDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
-        rightDriveFront.setTargetPosition(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
-        rightDriveBack.setTargetPosition(rightDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
 
-        setAllLeftDrivePower(leftPower);
-        setAllRightDrivePower(rightPower);
 
-        while (Math.abs(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1 &&
-                Math.abs(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1) {
-
-        }
-
-        setAllLeftDrivePower(0);
-        setAllRightDrivePower(0);
-    }
 }
