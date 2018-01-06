@@ -33,8 +33,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.util.zip.DeflaterInputStream;
-
 /**
  * This is NOT an opmode.
  * <p>
@@ -62,9 +60,10 @@ public class HardwareRobot {
     public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
 
-    final static double COUNTS_PER_MOTOR_REV = 1760;
-    final static double DRIVE_GEAR_REDUCTION = 2;
+    final static double COUNTS_PER_MOTOR_REV = 1750;
+    final static double DRIVE_GEAR_REDUCTION = 0.5;
     final static double WHEEL_DIAMETER_INCHES = 4;
+    final static double ROBOT_CIRCUMFERENCE = 75.659;
     public final static double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 //    public Servo    arm         = null;
@@ -91,12 +90,12 @@ public class HardwareRobot {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftDriveFront = hwMap.get(DcMotor.class, "leftMotorFront");
-        rightDriveFront = hwMap.get(DcMotor.class, "rightMotorFront");
-        leftDriveBack = hwMap.get(DcMotor.class, "leftMotorBack");
-        rightDriveBack = hwMap.get(DcMotor.class, "rightMotorBack");
-        leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
-        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveFront = hwMap.get(DcMotor.class, "m1");
+        rightDriveFront = hwMap.get(DcMotor.class, "m2");
+        leftDriveBack = hwMap.get(DcMotor.class, "m3");
+        rightDriveBack = hwMap.get(DcMotor.class, "m4");
+        rightDriveFront.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         setAllLeftDrivePower(0);
@@ -133,20 +132,49 @@ public class HardwareRobot {
 
     public void driveWithEncoder(double distance, double leftPower, double rightPower) {
 
-        leftDriveFront.setTargetPosition(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
-        leftDriveBack.setTargetPosition(leftDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
-        rightDriveFront.setTargetPosition(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
-        rightDriveBack.setTargetPosition(rightDriveBack.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance));
+        int current1 = leftDriveFront.getCurrentPosition();
+        int current2 = leftDriveBack.getCurrentPosition();
+        int current3 = rightDriveFront.getCurrentPosition();
+        int current4 = rightDriveBack.getCurrentPosition();
+
+        int target1 = current1 + (int)(COUNTS_PER_INCH * distance);
+        int target2 = current2 + (int)(COUNTS_PER_INCH * distance);
+        int target3 = current3 + (int)(COUNTS_PER_INCH * distance);
+        int target4 = current4 + (int)(COUNTS_PER_INCH * distance);
+
+        leftDriveFront.setTargetPosition(target1);
+        leftDriveBack.setTargetPosition(target2);
+        rightDriveFront.setTargetPosition(target3);
+        rightDriveBack.setTargetPosition(target4);
 
         setAllLeftDrivePower(leftPower);
         setAllRightDrivePower(rightPower);
 
-        while (Math.abs(leftDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1 &&
-                Math.abs(rightDriveFront.getCurrentPosition() + (int)(COUNTS_PER_INCH * distance)) > 1) {
+        while (Math.abs(target1 - current1) > 1 && Math.abs(target2 - current2) > 1 &&
+                Math.abs(target3 - current3) > 1 && Math.abs(target4 - current4) > 1) {
 
         }
 
         setAllLeftDrivePower(0);
         setAllRightDrivePower(0);
+    }
+
+    public void turnDegree(double angle) {
+
+        int currentPos = leftDriveFront.getCurrentPosition();
+        int targetPos = currentPos + (int)(COUNTS_PER_INCH * (ROBOT_CIRCUMFERENCE * (angle / 360)));
+
+        leftDriveFront.setTargetPosition(-targetPos);
+        leftDriveBack.setTargetPosition(-targetPos);
+        rightDriveFront.setTargetPosition(targetPos);
+        rightDriveBack.setTargetPosition(targetPos);
+
+        setAllLeftDrivePower(-1);
+        setAllRightDrivePower(1);
+
+        while ((Math.abs(leftDriveFront.getCurrentPosition() - targetPos) > 1) &&
+                (Math.abs(rightDriveFront.getCurrentPosition() - targetPos) > 1)) {
+
+        }
     }
 }
