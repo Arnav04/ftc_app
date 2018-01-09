@@ -1,14 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-public class TeleOp extends LinearOpMode {
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
-     HardwareRobot robot = new HardwareRobot();
-     HardwareMap hwmap = null;
+
+/**
+ * Created by nihalmahajani on 1/8/18.
+ */
+
+public class TeleOperation extends LinearOpMode {
+    HardwareRobot robot = new HardwareRobot();
+    HardwareMap hwmap = null;
 
     public void runOpMode() throws InterruptedException {
 
@@ -20,7 +31,7 @@ public class TeleOp extends LinearOpMode {
             double rightPower;
 
             double gPadLeftY = gamepad1.left_stick_y;
-            double gPadRightY = gamepad2.right_stick_y;
+            double gPadRightY = gamepad1.right_stick_y;
 
             leftPower = Range.clip(gPadLeftY, -1.0, 1.0);
             rightPower = Range.clip(gPadRightY, -1.0, 1.0);
@@ -48,3 +59,4 @@ public class TeleOp extends LinearOpMode {
         }
     }
 }
+
