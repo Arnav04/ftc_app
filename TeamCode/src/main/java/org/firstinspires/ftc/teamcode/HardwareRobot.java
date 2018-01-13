@@ -30,7 +30,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-//import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -59,6 +59,10 @@ public class HardwareRobot {
     public DcMotor leftDriveBack = null;
     public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
+    public CRServo cvn1 = null;
+    public CRServo cvn2 = null;
+    public DcMotor elev1 = null;
+    public DcMotor elev2 = null;
 
     final static double COUNTS_PER_MOTOR_REV = 1750;
     final static double DRIVE_GEAR_REDUCTION = 0.5;
@@ -94,8 +98,14 @@ public class HardwareRobot {
         rightDriveFront = hwMap.get(DcMotor.class, "m2");
         leftDriveBack = hwMap.get(DcMotor.class, "m3");
         rightDriveBack = hwMap.get(DcMotor.class, "m4");
+        cvn1 = hwMap.get(CRServo.class, "s1");
+        cvn2 = hwMap.get(CRServo.class, "s2");
+        elev1 = hwMap.get(DcMotor.class, "e1");
+        elev2 = hwMap.get(DcMotor.class, "e2");
+
         rightDriveFront.setDirection(DcMotor.Direction.REVERSE);
         rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        elev2.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         setAllLeftDrivePower(0);
