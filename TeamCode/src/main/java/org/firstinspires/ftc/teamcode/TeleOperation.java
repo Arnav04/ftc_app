@@ -19,11 +19,10 @@ import com.qualcomm.robotcore.util.Range;
 
 public class TeleOperation extends LinearOpMode {
     HardwareRobot robot = new HardwareRobot();
-    HardwareMap hwmap = null;
 
     public void runOpMode() throws InterruptedException {
 
-        robot.init(hwmap);
+        robot.init(hardwareMap);
 
         while (opModeIsActive()) {
 
