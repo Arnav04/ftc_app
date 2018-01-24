@@ -98,19 +98,23 @@ public class    HardwareRobot {
         /*elev1 = hwMap.get(DcMotor.class, "e1");
         elev2 = hwMap.get(DcMotor.class, "e2");*/
 
-        leftDriveFront.setDirection(DcMotor.Direction.FORWARD);
-        rightDriveFront.setDirection(DcMotor.Direction.REVERSE);
-        leftDriveBack.setDirection(DcMotor.Direction.FORWARD);
-        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveFront.setDirection(DcMotor.Direction.FORWARD);
+        leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        rightDriveBack.setDirection(DcMotor.Direction.FORWARD);
         /*cvn1.setDirection(CRServo.Direction.REVERSE);
         elev1.setDirection(DcMotor.Direction.REVERSE);*/
 
+        leftDriveFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDriveFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftDriveBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDriveBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void encoderSwitch() {

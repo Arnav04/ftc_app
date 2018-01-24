@@ -15,7 +15,6 @@ public class EncoderTest extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-
         telemetry.addData("run mode: ",robot.rightDriveFront.getMode());
 
 
@@ -74,7 +73,5 @@ public class EncoderTest extends LinearOpMode {
         telemetry.addData("current pos", robot.rightDriveFront.getCurrentPosition());
         telemetry.update();
         Thread.sleep(10000);
-        stop();
-
     }
 }
