@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@Autonomous (name = "Encoder test")
-public class EncoderTest extends LinearOpMode {
+@Autonomous (name = "Vinay's mom")
+public class ServoTest extends LinearOpMode {
 
     HardwareRobot robot = new HardwareRobot();
 
@@ -15,22 +15,24 @@ public class EncoderTest extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
+        /*robot.cvn1.setPower(1);
+        robot.cvn2.setPower(1);
+        Thread.sleep(1000);
 
-        telemetry.addData("run mode: ",robot.rightDriveFront.getMode());
-
-
-
-
+        robot.cvn1.setPower(0);
+        robot.cvn2.setPower(0);
+        Thread.sleep(10000);
+        stop();
 
         //while (opModeIsActive())
         //{
 
-            //robot.leftDriveBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //robot.leftDriveBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
-        //robot.encoderSwitc);
+        //robot.encoderSwitch();
 
-        int current = robot.rightDriveFront.getCurrentPosition();
+        /*int current = robot.rightDriveFront.getCurrentPosition();
         int target = current + (int)(robot.COUNTS_PER_INCH * 50);
         telemetry.addData("run mode: ",robot.rightDriveFront.getMode());
         telemetry.addData("current pos", robot.rightDriveFront.getCurrentPosition());
@@ -74,7 +76,7 @@ public class EncoderTest extends LinearOpMode {
         telemetry.addData("current pos", robot.rightDriveFront.getCurrentPosition());
         telemetry.update();
         Thread.sleep(10000);
-        stop();
+        stop();*/
 
     }
 }

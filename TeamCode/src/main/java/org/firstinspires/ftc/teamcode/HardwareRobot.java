@@ -28,7 +28,9 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -52,27 +54,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * As the claw servo approaches 0, the claw opens up (drops the game element).
  */
 
-public class HardwareRobot {
+public class    HardwareRobot {
 
     /* Public OpMode members. */
     public DcMotor leftDriveFront = null;
     public DcMotor leftDriveBack = null;
     public DcMotor rightDriveFront = null;
     public DcMotor rightDriveBack = null;
+    /*public CRServo cvn1 = null;
+    public CRServo cvn2 = null;/
+    public DcMotor elev1 = null;
+    public DcMotor elev2 = null;*/
 
     final static double COUNTS_PER_MOTOR_REV = 1750;
-    final static double DRIVE_GEAR_REDUCTION = 0.5;
+    final static double DRIVE_GEAR_REDUCTION = 1  ;
     final static double WHEEL_DIAMETER_INCHES = 4;
     public final static double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-
-//    public Servo    claw        = null;
-//    public final static double ARM_HOME = 0.2;
-//    public final static double CLAW_HOME = 0.2;
-//    public final static double ARM_MIN_RANGE  = 0.20;
-//    public final static double ARM_MAX_RANGE  = 0.90;
-//    public final static double CLAW_MIN_RANGE  = 0.20;
-//    public final static double CLAW_MAX_RANGE  = 0.7;
 
     /* Local OpMode members. */
     HardwareMap hwMap = null;
@@ -89,30 +87,30 @@ public class HardwareRobot {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftDriveFront = hwMap.get(DcMotor.class, "m1");
+        leftDriveFront  = hwMap.get(DcMotor.class, "m1");
         rightDriveFront = hwMap.get(DcMotor.class, "m2");
-        leftDriveBack = hwMap.get(DcMotor.class, "m3");
+        leftDriveBack  = hwMap.get(DcMotor.class, "m3");
         rightDriveBack = hwMap.get(DcMotor.class, "m4");
-        rightDriveFront.setDirection(DcMotor.Direction.REVERSE);
-        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        /*cvn1 = hwMap.get(CRServo.class, "s1");
+        cvn2 = hwMap.get(CRServo.class, "s2");
 
-        // Set all motors to zero power
-        setAllLeftDrivePower(0);
-        setAllRightDrivePower(0);
+        cvn1.setDirection(CRServo.Direction.REVERSE);*/
+        /*elev1 = hwMap.get(DcMotor.class, "e1");
+        elev2 = hwMap.get(DcMotor.class, "e2");*/
+
+        leftDriveFront.setDirection(DcMotor.Direction.FORWARD);
+        rightDriveFront.setDirection(DcMotor.Direction.REVERSE);
+        leftDriveBack.setDirection(DcMotor.Direction.FORWARD);
+        rightDriveBack.setDirection(DcMotor.Direction.REVERSE);
+        /*cvn1.setDirection(CRServo.Direction.REVERSE);
+        elev1.setDirection(DcMotor.Direction.REVERSE);*/
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightDriveFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightDriveBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Define and initialize ALL installed servos.
-        //arm  = hwMap.get(Servo.class, "arm");
-        //claw = hwMap.get(Servo.class, "claw");
-        //arm.setPosition(ARM_HOME);
-        //claw.setPosition(CLAW_HOME);
-
+        leftDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDriveFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDriveBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void encoderSwitch() {
@@ -177,20 +175,12 @@ public class HardwareRobot {
 
     }
     public void setAllLeftDrivePower(double power) {
-
         leftDriveFront.setPower(power);
         leftDriveBack.setPower(power);
-
     }
 
     public void setAllRightDrivePower(double power) {
-
         rightDriveFront.setPower(power);
         rightDriveBack.setPower(power);
-
     }
-
-
-
-
 }

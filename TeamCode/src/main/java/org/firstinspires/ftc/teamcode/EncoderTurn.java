@@ -17,7 +17,7 @@ public class EncoderTurn extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        telemetry.addData( "current pos: ", robot.leftDriveFront.getCurrentPosition());
+        /*telemetry.addData( "current pos: ", robot.leftDriveFront.getCurrentPosition());
 
         int currentPos = robot.leftDriveFront.getCurrentPosition();
         int targetPos = currentPos + (int)(robot.COUNTS_PER_INCH * 3);
@@ -55,6 +55,6 @@ public class EncoderTurn extends LinearOpMode {
         }
 
         telemetry.addData( "current pos: ", robot.leftDriveFront.getCurrentPosition());
-        telemetry.update();
+        telemetry.update();*/
     }
 }
